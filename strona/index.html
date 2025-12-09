@@ -79,11 +79,11 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
     <video width="320" height="240" controls>
       <source src="movie.mp4" type="video/mp4">
     </video>
-    <center><img src="obraz.jpg" alt="Sigma"><br></center>
-    <img src="..jpg" width="300" height="100" alt="strzałka"><br>
-    <font color=green><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></font>
+    <center><img src="https://via.placeholder.com/300x200?text=Telefon" alt="telefon"/><br></center>
+    <img src="https://via.placeholder.com/300x100?text=Strzałka" width="300" height="100" alt="strzałka"/><br>
+    <font color=green><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></font><br>
     <font color=#FFFF00 size=5><a href="https://fajnekonkursy.pl/loterie/">wejdź na naszą stronę!!!</a></font><br>
-    <center><img src="gif.gif" alt="GIF" width="500" height="500"><br></center>
+    <center><img src="https://via.placeholder.com/500x500?text=GIF" alt="GIF" width="500" height="500"><br></center>
     <font color=white>Nasze opinie prezentują się następująco: <br></font>
     <table>
       <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
@@ -93,7 +93,7 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
       <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
       <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
     </table>
-    <img src="0002.gif" alt="Mery_christmas"><br>
+    <img src="https://via.placeholder.com/300x200?text=Mery_Christmas" alt="Mery_christmas"><br>
     <audio controls autoplay>
       <source src="9.mp3" type="audio/mpeg">
     </audio><br>
@@ -160,13 +160,11 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
 <footer style="text-align:center;padding:20px" class="small muted">© Twoja Strona</footer>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
   authDomain: "loteria-8e369.firebaseapp.com",
@@ -178,20 +176,10 @@ const firebaseConfig = {
 };
 const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
 
-// Init Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-
-// --- Utility ---
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
-function formatPL(dateStr){
-  const d = new Date(dateStr);
-  if(isNaN(d)) return dateStr;
-  const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
 
 // --- DOM ---
 const goLogin = document.getElementById('goLogin');
@@ -227,6 +215,15 @@ const userLikesEl = document.getElementById('userLikes');
 
 let currentAvatarURL = null;
 let foundEggs = new Set();
+
+// --- Utility ---
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function formatPL(dateStr){
+  const d = new Date(dateStr);
+  if(isNaN(d)) return dateStr;
+  const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
 
 // --- Dark mode ---
 const savedTheme = localStorage.getItem('theme') || 'light';
@@ -309,7 +306,7 @@ onAuthStateChanged(auth,async (user)=>{
     }
     document.getElementById('eggCount').textContent=eggCount;
     document.getElementById('eggCounter').style.display='block';
-    foundEggs = new Set(); // reset na nowo
+    foundEggs = new Set();
     placeEasterEggs();
   }else{
     loginStatus.textContent='niezalogowany';
@@ -319,7 +316,69 @@ onAuthStateChanged(auth,async (user)=>{
   }
 });
 
+// --- Formularz kontaktowy ---
+sendContact.addEventListener('click', async ()=>{
+  contactStatus.textContent='';
+  const name = contactName.value.trim();
+  const email = contactEmail.value.trim();
+  const msg = contactMsg.value.trim();
+  if(!email || !msg){ contactStatus.textContent = 'Email i wiadomość są wymagane!'; return; }
+  try{
+    await addDoc(collection(db,'contacts'),{name,email,msg,date:new Date()});
+    contactStatus.textContent='Wiadomość wysłana!';
+    contactName.value=''; contactEmail.value=''; contactMsg.value='';
+  }catch(e){ contactStatus.textContent='Błąd wysyłki: '+e.message; }
+});
+
+// --- Komentarze ---
+postComment.addEventListener('click', async ()=>{
+  const user = auth.currentUser;
+  if(!user){ toast('Musisz być zalogowany!'); return; }
+  const text = commentText.value.trim();
+  if(!text) return;
+
+  const commentData = {
+    userId: user.uid,
+    email: user.email,
+    text,
+    date: new Date(),
+    avatar: currentAvatarURL || null
+  };
+
+  try{
+    await addDoc(collection(db,'comments'),commentData);
+    commentText.value='';
+    toast('Komentarz dodany!');
+    loadComments();
+  }catch(e){ toast('Błąd: '+e.message); }
+});
+
+// --- Wyświetlanie komentarzy ---
+async function loadComments(){
+  commentsList.innerHTML='';
+  const q = query(collection(db,'comments'),orderBy('date','desc'));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach(docSnap=>{
+    const c = docSnap.data();
+    const div = document.createElement('div');
+    div.className='comment flex';
+    div.innerHTML = `
+      ${c.avatar ? `<img src="${c.avatar}" class="avatar">` : ''}
+      <div>
+        <div class="meta">${c.email} • ${formatPL(c.date.toDate ? c.date.toDate() : c.date)}</div>
+        <div>${c.text}</div>
+      </div>
+    `;
+    commentsList.appendChild(div);
+  });
+}
+
+// --- Live chat: automatyczne odświeżanie co 5 sekund ---
+setInterval(loadComments, 5000);
+
+// Załaduj komentarze przy starcie
+loadComments();
+
 </script>
 </body>
 </html>
-
