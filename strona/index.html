@@ -145,7 +145,7 @@ th{background:#ddd;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
@@ -275,14 +275,32 @@ async function loadComments(){
 }
 
 // Delete & Like
-window.deleteComment = async function(commentId){ try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } catch(e){ toast('Błąd: '+e.message); } }
-window.likeComment = async function(commentId){ const user=auth.currentUser; if(!user){ toast('Musisz być zalogowany!'); return; } const commentRef=doc(db,'comments',commentId); try{ await updateDoc(commentRef,{likes: increment(1)}); loadComments(); toast('Polubiono komentarz!'); } catch(e){ toast('Błąd: '+e.message); } }
+window.deleteComment = async function(commentId){ 
+  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } 
+  catch(e){ toast('Błąd: '+e.message); } 
+}
+
+window.likeComment = async function(commentId){
+  const user = auth.currentUser;
+  if(!user){ toast('Musisz być zalogowany!'); return; }
+
+  const commentRef = doc(db,'comments',commentId);
+  try{
+    const commentSnap = await getDoc(commentRef);
+    if(!commentSnap.exists()) return;
+    const data = commentSnap.data();
+    const currentLikes = data.likes || 0;
+    await updateDoc(commentRef, { likes: currentLikes + 1 });
+    toast('Polubiono komentarz!');
+    loadComments();
+  }catch(e){ toast('Błąd: '+e.message); }
+}
 
 // Auth state
 onAuthStateChanged(auth,async (user)=>{
   if(user){
-    loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
-    userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
+    loginStatus.textContent = user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
+    userPanel.textContent = `Jesteś zalogowany jako ${user.email}`;
     compose.style.display='block';
     const userDocSnap = (await getDocs(collection(db,'users'))).docs.find(d=>d.id===user.uid);
     if(userDocSnap){ 
@@ -301,10 +319,9 @@ onAuthStateChanged(auth,async (user)=>{
   }
 });
 
-// Refresh comments every 5s
+// Refresh comments
 setInterval(loadComments,5000);
 loadComments();
-
 </script>
 </body>
 </html>
