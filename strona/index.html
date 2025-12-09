@@ -145,7 +145,7 @@ th{background:#ddd;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
@@ -199,7 +199,7 @@ function formatPL(dateStr){
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-// --- Dark mode ---
+// Dark mode
 const savedTheme = localStorage.getItem('theme') || 'light';
 body.setAttribute('data-theme', savedTheme);
 themeBtn.textContent = savedTheme==='light' ? 'Tryb ciemny' : 'Tryb jasny';
@@ -211,7 +211,7 @@ themeBtn.addEventListener('click',()=>{
   themeBtn.textContent = next==='light'?'Tryb ciemny':'Tryb jasny';
 });
 
-// --- Modal login/register ---
+// Modal login/register
 goLogin.addEventListener('click',()=> modal.style.display='flex');
 mClose.addEventListener('click',()=> modal.style.display='none');
 mLogin.addEventListener('click',async ()=>{
@@ -229,7 +229,7 @@ mRegister.addEventListener('click',async ()=>{
   }catch(e){ modalMsg.textContent=e.message; }
 });
 
-// --- Contact ---
+// Contact form
 sendContact.addEventListener('click', async ()=>{
   const name = contactName.value.trim();
   const email = contactEmail.value.trim();
@@ -242,29 +242,18 @@ sendContact.addEventListener('click', async ()=>{
   }catch(e){ contactStatus.textContent='Błąd wysyłki: '+e.message; }
 });
 
-// --- Comments ---
+// Comments
 postComment.addEventListener('click', async ()=>{
   const user = auth.currentUser;
   if(!user){ toast('Musisz być zalogowany!'); return; }
   const text = commentText.value.trim();
   if(!text) return;
-  const commentData = {
-    userId: user.uid,
-    email: user.email,
-    text,
-    date: new Date(),
-    avatar: currentAvatarURL || null,
-    likes: 0
-  };
-  try{
-    await addDoc(collection(db,'comments'),commentData);
-    commentText.value='';
-    toast('Komentarz dodany!');
-    loadComments();
-  }catch(e){ toast('Błąd: '+e.message); }
+  const commentData = { userId: user.uid, email: user.email, text, date: new Date(), avatar: currentAvatarURL||null, likes: 0 };
+  try{ await addDoc(collection(db,'comments'),commentData); commentText.value=''; toast('Komentarz dodany!'); loadComments(); }
+  catch(e){ toast('Błąd: '+e.message); }
 });
 
-// --- Display comments ---
+// Load comments
 async function loadComments(){
   const user = auth.currentUser;
   commentsList.innerHTML='';
@@ -276,49 +265,32 @@ async function loadComments(){
     div.className='comment';
     const avatarHtml = c.avatar ? `<img src="${c.avatar}" class="avatar">` : '';
     let actionsHtml = '';
-    if(user && (user.email === ADMIN_EMAIL || user.uid === c.userId)){
+    if(user && (user.email===ADMIN_EMAIL || user.uid===c.userId)){
       actionsHtml += `<button class="btn gray" onclick="deleteComment('${docSnap.id}')">Usuń</button>`;
     }
-    actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes || 0})</button>`;
-    div.innerHTML = `
-      ${avatarHtml}
-      <div>
-        <div class="meta">${c.email} • ${formatPL(c.date.toDate ? c.date.toDate() : c.date)}</div>
-        <div>${c.text}</div>
-        <div class="actions">${actionsHtml}</div>
-      </div>
-    `;
+    actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes||0})</button>`;
+    div.innerHTML = `${avatarHtml}<div><div class="meta">${c.email} • ${formatPL(c.date.toDate?c.date.toDate():c.date)}</div><div>${c.text}</div><div class="actions">${actionsHtml}</div></div>`;
     commentsList.appendChild(div);
   });
 }
 
-// --- Delete & Like functions ---
-window.deleteComment = async function(commentId){
-  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } 
-  catch(e){ toast('Błąd: '+e.message); }
-}
+// Delete & Like
+window.deleteComment = async function(commentId){ try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } catch(e){ toast('Błąd: '+e.message); } }
+window.likeComment = async function(commentId){ const user=auth.currentUser; if(!user){ toast('Musisz być zalogowany!'); return; } const commentRef=doc(db,'comments',commentId); try{ await updateDoc(commentRef,{likes: increment(1)}); loadComments(); toast('Polubiono komentarz!'); } catch(e){ toast('Błąd: '+e.message); } }
 
-window.likeComment = async function(commentId){
-  const user = auth.currentUser;
-  if(!user){ toast('Musisz być zalogowany!'); return; }
-  const commentRef = doc(db,'comments',commentId);
-  await updateDoc(commentRef,{likes: (firebase.firestore.FieldValue || {increment:()=>1}).increment(1)});
-  loadComments();
-}
-
-// --- Auth state ---
+// Auth state
 onAuthStateChanged(auth,async (user)=>{
   if(user){
     loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
     userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
     compose.style.display='block';
-    const userDocSnap=(await getDocs(query(collection(db,'users')))).docs.find(d=>d.id===user.uid);
-    if(userDocSnap){
-      const ud=userDocSnap.data();
-      if(ud.avatar){ currentAvatarURL=ud.avatar; }
+    const userDocSnap = (await getDocs(collection(db,'users'))).docs.find(d=>d.id===user.uid);
+    if(userDocSnap){ 
+      const ud = userDocSnap.data(); 
+      if(ud.avatar){ currentAvatarURL=ud.avatar; document.getElementById('myAvatarPreview').src=currentAvatarURL; document.getElementById('myAvatarPreview').style.display='block'; }
       userLevelEl.textContent=ud.level||'-';
       userLikesEl.textContent=ud.totalLikes||0;
-    }else{
+    }else{ 
       userLevelEl.textContent='-'; userLikesEl.textContent='0';
       await setDoc(doc(db,'users',user.uid),{email:user.email},{merge:true});
     }
@@ -329,7 +301,7 @@ onAuthStateChanged(auth,async (user)=>{
   }
 });
 
-// Load comments every 5 seconds
+// Refresh comments every 5s
 setInterval(loadComments,5000);
 loadComments();
 
