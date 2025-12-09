@@ -3,14 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Loteria</title>
+<title>Loteria - Pełna wersja</title>
 <style>
-:root{
-  --bg:#C0C0C0; --text:#222; --card:#fff; --accent:#6a0dad;
-}
-[data-theme="dark"]{
-  --bg:#111; --text:#eee; --card:#222; --accent:#9b59ff;
-}
+:root{--bg:#C0C0C0;--text:#222;--card:#fff;--accent:#6a0dad;}
+[data-theme="dark"]{--bg:#111;--text:#eee;--card:#222;--accent:#9b59ff;}
 body{font-family:Arial,sans-serif;margin:0;padding:20px;background:var(--bg);color:var(--text);}
 header, main, footer{max-width:1000px;margin:0 auto;}
 .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -41,6 +37,8 @@ th{background:#ddd;}
 #modal button{background:var(--accent);color:#fff;cursor:pointer;}
 [data-theme="dark"] #modal input{background:#333;color:#eee;}
 [data-theme="dark"] #modal button{background:var(--accent);color:#fff;}
+#leaderboard{margin-top:12px;border:1px solid #999;padding:10px;border-radius:8px;background:#eee;}
+#leaderboard h4{margin:0 0 6px 0;}
 </style>
 </head>
 <body data-theme="light">
@@ -58,34 +56,8 @@ th{background:#ddd;}
 
 <main>
 <section class="card">
-  <div style="background-color:#C0C0C0;padding:8px">
-    <h1 style="color:#800080">Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</h1>
-    <p style="font-family:'Courier New', monospace;color:blue;font-size:1.2em;">Oferujemy łatwą wygraną oraz szybkie wysyłki</p>
-    <marquee direction=right><b style="color:red;">Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></marquee>
-    <video width="320" height="240" controls>
-      <source src="movie.mp4" type="video/mp4">
-    </video>
-    <center><img src="obraz.jpg" alt="telefon"><br></center>
-    <img src="..jpg" width="300" height="100" alt="strzałka"><br>
-    <p style="color:green;"><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></p>
-    <a href="https://fajnekonkursy.pl/loterie/" style="color:yellow;font-size:1.2em;">wejdź na naszą stronę!!!</a><br>
-    <center><img src="gif.gif" alt="GIF" width="500" height="500"><br></center>
-    <p style="color:white;">Nasze opinie prezentują się następująco:</p>
-    <table>
-      <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
-      <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
-      <tr><td>Maria</td><td>8/10</td><td>Czechy</td></tr>
-      <tr><th>uczestnik</th><th>prędkość wysyłki nagrody</th><th>kraj</th></tr>
-      <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
-      <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
-    </table>
-    <img src="0002.gif" alt="Mery_christmas"><br>
-    <audio controls autoplay>
-      <source src="9.mp3" type="audio/mpeg">
-    </audio><br>
-    <small>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></small><br>
-    <b style="color:white;">Pamiętaj Polaku bądź sobą!!!</b>
-  </div>
+  <h1>Wygraj u nas gry, samochody i nagrody!</h1>
+  <p>Łatwe wygrane i szybka wysyłka. Codziennie losowania o 12:25!</p>
 </section>
 
 <section class="card">
@@ -97,17 +69,16 @@ th{background:#ddd;}
   <div id="contactStatus" class="small muted"></div>
 </section>
 
-<hr>
-
 <section class="card">
   <h3>Komentarze</h3>
-  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucić awatar.
+  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucać awatar i GIF.
     <div id="eggCounter" style="margin-top:4px; display:none;">Znalazłeś <span id="eggCount">0</span> easter eggów!</div>
   </div>
   <div id="compose" style="display:none;margin-top:8px">
     <div class="flex">
       <img id="myAvatarPreview" class="avatar" src="" alt="avatar" style="display:none">
       <input type="file" id="avatarUpload" accept="image/*" style="width:auto">
+      <input type="file" id="mediaUpload" accept="image/*,video/*,gif/*" style="width:auto">
       <div style="flex:1">
         <textarea id="commentText" placeholder="Twój komentarz"></textarea>
         <div class="small muted">Poziom: <span id="userLevel">-</span> • Polubień: <span id="userLikes">0</span></div>
@@ -118,6 +89,8 @@ th{background:#ddd;}
       <button id="clearAvatar" class="btn gray">Usuń awatar</button>
     </div>
   </div>
+  <h4 class="small muted" style="margin-top:12px">Leaderboard</h4>
+  <div id="leaderboard"></div>
   <h4 class="small muted" style="margin-top:12px">Na żywo (chat)</h4>
   <div id="commentsList"></div>
 </section>
@@ -143,186 +116,204 @@ th{background:#ddd;}
 <footer style="text-align:center;padding:20px" class="small muted">© Twoja Strona</footer>
 
 <script type="module">
+// ------------------- IMPORTY FIREBASE -------------------
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
-  authDomain: "loteria-8e369.firebaseapp.com",
-  projectId: "loteria-8e369",
-  storageBucket: "loteria-8e369.appspot.com",
-  messagingSenderId: "596116000000",
-  appId: "1:596116000000:web:383aa9766aa045a77e77e5",
-  measurementId: "G-NTF8HYCZN0"
+  apiKey: "TU_WSTAW_SWÓJ_FIREBASE_API_KEY",
+  authDomain: "TU_WSTAW_SWÓJ_FIREBASE_AUTHDOMAIN",
+  projectId: "TU_WSTAW_SWÓJ_FIREBASE_PROJECTID",
+  storageBucket: "TU_WSTAW_SWÓJ_FIREBASE_STORAGEBUCKET",
+  messagingSenderId: "TU_WSTAW_SWÓJ_FIREBASE_MESSAGING",
+  appId: "TU_WSTAW_SWÓJ_FIREBASE_APPID"
 };
-const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
 
+const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-const loginStatus = document.getElementById('loginStatus');
-const goLogin = document.getElementById('goLogin');
-const modal = document.getElementById('modal');
-const mClose = document.getElementById('mClose');
-const mLogin = document.getElementById('mLogin');
-const mRegister = document.getElementById('mRegister');
-const mEmail = document.getElementById('mEmail');
-const mPass = document.getElementById('mPass');
-const modalMsg = document.getElementById('modalMsg');
-const themeBtn = document.getElementById('themeBtn');
-const body = document.body;
-
-const compose = document.getElementById('compose');
-const postComment = document.getElementById('postComment');
-const commentText = document.getElementById('commentText');
-const commentsList = document.getElementById('commentsList');
-const userPanel = document.getElementById('userPanel');
-
-const contactName = document.getElementById('contactName');
-const contactEmail = document.getElementById('contactEmail');
-const contactMsg = document.getElementById('contactMsg');
-const sendContact = document.getElementById('sendContact');
-const contactStatus = document.getElementById('contactStatus');
-
-const userLevelEl = document.getElementById('userLevel');
-const userLikesEl = document.getElementById('userLikes');
-
-let currentAvatarURL = null;
-
+// ------------------- FUNKCJE POMOCNICZE -------------------
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
-function formatPL(dateStr){
-  const d = new Date(dateStr);
-  if(isNaN(d)) return dateStr;
-  const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
+function formatPL(date){ const d=date instanceof Date?date:date.toDate(); return `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
-// Dark mode
-const savedTheme = localStorage.getItem('theme') || 'light';
-body.setAttribute('data-theme', savedTheme);
-themeBtn.textContent = savedTheme==='light' ? 'Tryb ciemny' : 'Tryb jasny';
+// ------------------- ELEMENTY DOM -------------------
+const themeBtn=document.getElementById('themeBtn');
+const body=document.body;
+const goLogin=document.getElementById('goLogin');
+const modal=document.getElementById('modal');
+const mClose=document.getElementById('mClose');
+const mLogin=document.getElementById('mLogin');
+const mRegister=document.getElementById('mRegister');
+const mEmail=document.getElementById('mEmail');
+const mPass=document.getElementById('mPass');
+const modalMsg=document.getElementById('modalMsg');
+const loginStatus=document.getElementById('loginStatus');
+
+const compose=document.getElementById('compose');
+const postComment=document.getElementById('postComment');
+const commentText=document.getElementById('commentText');
+const commentsList=document.getElementById('commentsList');
+const userPanel=document.getElementById('userPanel');
+const avatarUpload=document.getElementById('avatarUpload');
+const mediaUpload=document.getElementById('mediaUpload');
+const myAvatarPreview=document.getElementById('myAvatarPreview');
+const clearAvatar=document.getElementById('clearAvatar');
+const userLevelEl=document.getElementById('userLevel');
+const userLikesEl=document.getElementById('userLikes');
+const leaderboardEl=document.getElementById('leaderboard');
+const eggCountEl=document.getElementById('eggCount');
+
+// ------------------- DARK MODE -------------------
 themeBtn.addEventListener('click',()=>{
   const cur=body.getAttribute('data-theme');
   const next=cur==='light'?'dark':'light';
   body.setAttribute('data-theme',next);
-  localStorage.setItem('theme',next);
-  themeBtn.textContent = next==='light'?'Tryb ciemny':'Tryb jasny';
+  themeBtn.textContent=next==='light'?'Tryb ciemny':'Tryb jasny';
 });
 
-// Modal login/register
-goLogin.addEventListener('click',()=> modal.style.display='flex');
-mClose.addEventListener('click',()=> modal.style.display='none');
-mLogin.addEventListener('click',async ()=>{
-  modalMsg.textContent='';
-  try{
-    await signInWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim());
-    modal.style.display='none'; toast('Zalogowano');
-  }catch(e){ modalMsg.textContent=e.message; }
+// ------------------- MODAL LOGIN/REGISTER -------------------
+goLogin.addEventListener('click',()=>modal.style.display='flex');
+mClose.addEventListener('click',()=>modal.style.display='none');
+mLogin.addEventListener('click', async()=>{
+  try{ await signInWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim()); modal.style.display='none'; toast('Zalogowano'); }catch(e){ modalMsg.textContent=e.message; }
 });
-mRegister.addEventListener('click',async ()=>{
-  modalMsg.textContent='';
-  try{
-    await createUserWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim());
-    modal.style.display='none'; toast('Zarejestrowano');
-  }catch(e){ modalMsg.textContent=e.message; }
+mRegister.addEventListener('click', async()=>{
+  try{ await createUserWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim()); modal.style.display='none'; toast('Zarejestrowano'); }catch(e){ modalMsg.textContent=e.message; }
 });
 
-// Contact form
-sendContact.addEventListener('click', async ()=>{
-  const name = contactName.value.trim();
-  const email = contactEmail.value.trim();
-  const msg = contactMsg.value.trim();
-  if(!email || !msg){ contactStatus.textContent = 'Email i wiadomość są wymagane!'; return; }
-  try{
-    await addDoc(collection(db,'contacts'),{name,email,msg,date:new Date()});
-    contactStatus.textContent='Wiadomość wysłana!';
-    contactName.value=''; contactEmail.value=''; contactMsg.value='';
-  }catch(e){ contactStatus.textContent='Błąd wysyłki: '+e.message; }
-});
+// ------------------- KOMENTARZE, MEDIA, POLUBIENIA, LEADERBOARD -------------------
+let foundEggs=new Set();
+const easterEggs=['images/egg1.png','images/egg2.png','images/egg3.png'];
 
-// Comments
-postComment.addEventListener('click', async ()=>{
-  const user = auth.currentUser;
-  if(!user){ toast('Musisz być zalogowany!'); return; }
-  const text = commentText.value.trim();
-  if(!text) return;
-  const commentData = { userId: user.uid, email: user.email, text, date: new Date(), avatar: currentAvatarURL||null, likes: 0 };
-  try{ await addDoc(collection(db,'comments'),commentData); commentText.value=''; toast('Komentarz dodany!'); loadComments(); }
-  catch(e){ toast('Błąd: '+e.message); }
-});
-
-// Load comments
-async function loadComments(){
-  const user = auth.currentUser;
-  commentsList.innerHTML='';
-  const q = query(collection(db,'comments'),orderBy('date','desc'));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach(docSnap=>{
-    const c = docSnap.data();
-    const div = document.createElement('div');
-    div.className='comment';
-    const avatarHtml = c.avatar ? `<img src="${c.avatar}" class="avatar">` : '';
-    let actionsHtml = '';
-    if(user && (user.email===ADMIN_EMAIL || user.uid===c.userId)){
-      actionsHtml += `<button class="btn gray" onclick="deleteComment('${docSnap.id}')">Usuń</button>`;
-    }
-    actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes||0})</button>`;
-    div.innerHTML = `${avatarHtml}<div><div class="meta">${c.email} • ${formatPL(c.date.toDate?c.date.toDate():c.date)}</div><div>${c.text}</div><div class="actions">${actionsHtml}</div></div>`;
-    commentsList.appendChild(div);
+function placeEasterEggs(){
+  easterEggs.forEach((src,index)=>{
+    const egg=document.createElement('img');
+    egg.src=src; egg.style.position='absolute'; egg.style.width='30px';
+    egg.style.cursor='pointer'; egg.style.left=Math.random()*(window.innerWidth-40)+'px';
+    egg.style.top=Math.random()*(window.innerHeight-40)+'px'; egg.dataset.index=index;
+    egg.addEventListener('click', async()=>{
+      if(!foundEggs.has(index)){
+        foundEggs.add(index);
+        toast('Znalazłeś easter egga!');
+        const user=auth.currentUser;
+        if(user){
+          const userRef=doc(db,'users',user.uid);
+          const snap=await getDoc(userRef);
+          const currentCount=snap.exists()?snap.data().easterEggsFound||0:0;
+          await updateDoc(userRef,{easterEggsFound:currentCount+1});
+          eggCountEl.textContent=foundEggs.size;
+        }
+        egg.style.opacity=0.3;
+      }
+    });
+    document.body.appendChild(egg);
   });
 }
 
-// Delete & Like
-window.deleteComment = async function(commentId){ 
-  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } 
-  catch(e){ toast('Błąd: '+e.message); } 
-}
-
-window.likeComment = async function(commentId){
-  const user = auth.currentUser;
-  if(!user){ toast('Musisz być zalogowany!'); return; }
-
-  const commentRef = doc(db,'comments',commentId);
-  try{
-    const commentSnap = await getDoc(commentRef);
-    if(!commentSnap.exists()) return;
-    const data = commentSnap.data();
-    const currentLikes = data.likes || 0;
-    await updateDoc(commentRef, { likes: currentLikes + 1 });
-    toast('Polubiono komentarz!');
-    loadComments();
-  }catch(e){ toast('Błąd: '+e.message); }
-}
-
-// Auth state
-onAuthStateChanged(auth,async (user)=>{
-  if(user){
-    loginStatus.textContent = user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
-    userPanel.textContent = `Jesteś zalogowany jako ${user.email}`;
-    compose.style.display='block';
-    const userDocSnap = (await getDocs(collection(db,'users'))).docs.find(d=>d.id===user.uid);
-    if(userDocSnap){ 
-      const ud = userDocSnap.data(); 
-      if(ud.avatar){ currentAvatarURL=ud.avatar; document.getElementById('myAvatarPreview').src=currentAvatarURL; document.getElementById('myAvatarPreview').style.display='block'; }
-      userLevelEl.textContent=ud.level||'-';
-      userLikesEl.textContent=ud.totalLikes||0;
-    }else{ 
-      userLevelEl.textContent='-'; userLikesEl.textContent='0';
-      await setDoc(doc(db,'users',user.uid),{email:user.email},{merge:true});
+async function loadComments(){
+  const snaps=await getDocs(query(collection(db,'comments'), orderBy('date','desc')));
+  commentsList.innerHTML='';
+  snaps.forEach(docSnap=>{
+    const c=docSnap.data();
+    const div=document.createElement('div'); div.className='comment';
+    const avatar=document.createElement('img'); avatar.className='avatar'; avatar.src=c.avatar||'https://via.placeholder.com/40';
+    const content=document.createElement('div'); content.style.flex='1';
+    const meta=document.createElement('div'); meta.className='meta'; meta.textContent=`${c.email} • ${formatPL(c.date)} • Polubień: ${c.likes||0}`;
+    const textEl=document.createElement('div'); textEl.textContent=c.text;
+    content.appendChild(meta); content.appendChild(textEl);
+    if(c.media){ const mediaEl=document.createElement(c.media.endsWith('.mp4')?'video':'img'); mediaEl.src=c.media;
+      if(mediaEl.tagName==='VIDEO'){ mediaEl.controls=true; mediaEl.width=200; }else mediaEl.width=200;
+      content.appendChild(mediaEl);
     }
-  }else{
-    loginStatus.textContent='niezalogowany';
-    userPanel.textContent='Zaloguj, żeby pisać komentarze i wrzucić awatar.';
-    compose.style.display='none';
-  }
+    const actions=document.createElement('div'); actions.className='actions';
+    const likeBtn=document.createElement('button'); likeBtn.textContent='❤'; likeBtn.className='btn like';
+    likeBtn.onclick=()=>likeComment(docSnap.id); actions.appendChild(likeBtn);
+    const delBtn=document.createElement('button'); delBtn.textContent='Usuń'; delBtn.className='btn gray';
+    delBtn.onclick=()=>deleteComment(docSnap.id,c.userId); actions.appendChild(delBtn);
+    content.appendChild(actions); div.appendChild(avatar); div.appendChild(content); commentsList.appendChild(div);
+  });
+}
+
+async function likeComment(commentId){
+  const user=auth.currentUser; if(!user){ toast('Zaloguj się aby polubić komentarz'); return; }
+  const commentRef=doc(db,'comments',commentId); const snap=await getDoc(commentRef);
+  if(!snap.exists()) return; const data=snap.data();
+  await updateDoc(commentRef,{likes:(data.likes||0)+1});
+  const authorRef=doc(db,'users',data.userId); const authorSnap=await getDoc(authorRef);
+  const authorData=authorSnap.exists()?authorSnap.data():{};
+  await updateDoc(authorRef,{totalLikes:(authorData.totalLikes||0)+1});
+  toast('Polubiono komentarz!'); loadComments(); updateLeaderboard();
+}
+
+async function deleteComment(commentId, commentUserId){
+  const user=auth.currentUser; if(!user) return;
+  if(user.uid!==commentUserId && user.email!==ADMIN_EMAIL){ toast('Nie możesz usuwać tego komentarza'); return; }
+  await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty'); loadComments(); updateLeaderboard();
+}
+
+postComment.addEventListener('click', async()=>{
+  const user=auth.currentUser; if(!user){ toast('Zaloguj się aby dodać komentarz'); return; }
+  const text=commentText.value.trim(); if(!text && !mediaUpload.files[0]){ toast('Wpisz komentarz lub dodaj media'); return; }
+  let mediaURL=null;
+  if(mediaUpload.files[0]){ const file=mediaUpload.files[0]; const ref=sRef(storage,`comments/${user.uid}_${Date.now()}_${file.name}`); await uploadBytes(ref,file); mediaURL=await getDownloadURL(ref); }
+  await addDoc(collection(db,'comments'),{userId:user.uid,email:user.email,text,media:mediaURL,likes:0,date:new Date(),avatar:myAvatarPreview.src||null});
+  commentText.value=''; mediaUpload.value=''; toast('Komentarz dodany!'); loadComments(); updateLeaderboard();
 });
 
-// Refresh comments
-setInterval(loadComments,5000);
-loadComments();
+// ------------------- LEADERBOARD -------------------
+async function updateLeaderboard(){
+  const snaps=await getDocs(query(collection(db,'users'), orderBy('totalLikes','desc')));
+  leaderboardEl.innerHTML='<h4>Top użytkownicy</h4>';
+  snaps.forEach(docSnap=>{
+    const u=docSnap.data(); let rank='Nowicjusz';
+    if(u.totalLikes>=10) rank='Wygrywający'; if(u.totalLikes>=30) rank='Mistrz losowań';
+    const div=document.createElement('div'); div.textContent=`${u.email} • Polubień: ${u.totalLikes} • Ranga: ${rank}`; leaderboardEl.appendChild(div);
+    if(auth.currentUser && auth.currentUser.uid===docSnap.id){ userLevelEl.textContent=rank; userLikesEl.textContent=u.totalLikes; }
+  });
+}
+
+// ------------------- AUTH STATE -------------------
+onAuthStateChanged(auth, async(user)=>{
+  if(user){
+    loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
+    compose.style.display='block';
+    userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
+    const userRef=doc(db,'users',user.uid); const snap=await getDoc(userRef);
+    if(!snap.exists()) await setDoc(userRef,{email:user.email, totalLikes:0, easterEggsFound:0});
+    myAvatarPreview.src=snap.exists()?snap.data().avatar||'':'';
+    if(myAvatarPreview.src) myAvatarPreview.style.display='block';
+    eggCountEl.textContent=snap.exists()?snap.data().easterEggsFound||0:0;
+    foundEggs=new Set();
+    placeEasterEggs();
+  }else{
+    loginStatus.textContent='niezalogowany';
+    compose.style.display='none'; myAvatarPreview.style.display='none';
+  }
+  loadComments(); updateLeaderboard();
+});
+
+// ------------------- AVATAR -------------------
+avatarUpload.addEventListener('change', async()=>{
+  const user=auth.currentUser; if(!user) return;
+  const file=avatarUpload.files[0]; if(!file) return;
+  const ref=sRef(storage,`avatars/${user.uid}_${Date.now()}_${file.name}`);
+  await uploadBytes(ref,file); const url=await getDownloadURL(ref); myAvatarPreview.src=url; myAvatarPreview.style.display='block';
+  await updateDoc(doc(db,'users',user.uid),{avatar:url});
+});
+clearAvatar.addEventListener('click', async()=>{
+  const user=auth.currentUser; if(!user) return;
+  myAvatarPreview.src=''; myAvatarPreview.style.display='none';
+  await updateDoc(doc(db,'users',user.uid),{avatar:null});
+});
+
 </script>
+
 </body>
 </html>
+
 
