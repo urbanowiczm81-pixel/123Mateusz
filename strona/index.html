@@ -145,10 +145,36 @@ th{background:#ddd;}
 <footer style="text-align:center;padding:20px" class="small muted">© Twoja Strona</footer>
 
 <script type="module">
-// Tutaj wklej kompletny JS z Firebase:
-// logowanie/rejestracja, komentarze, polubienia, media, awatary, easter eggs, dark mode, leaderboard
+// --- Firebase config ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
+  authDomain: "loteria-8e369.firebaseapp.com",
+  projectId: "loteria-8e369",
+  storageBucket: "loteria-8e369.appspot.com",
+  messagingSenderId: "596116000000",
+  appId: "1:596116000000:web:383aa9766aa045a77e77e5",
+  measurementId: "G-NTF8HYCZN0"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
+
+// --- Tutaj wklej cały JS, który wcześniej wygenerowałem ---
+// logowanie, komentarze, polubienia, media, awatary, easter eggs, dark mode, kontakt
+
 </script>
 
 </body>
 </html>
+
 
