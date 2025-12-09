@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loteria</title>
+<style>
+:root{
+  --bg:#C0C0C0; --text:#222; --card:#fff; --accent:#6a0dad;
+}
+[data-theme="dark"]{
+  --bg:#111; --text:#eee; --card:#222; --accent:#9b59ff;
+}
+body{font-family:Arial,sans-serif;margin:0;padding:20px;background:var(--bg);color:var(--text);}
+header, main, footer{max-width:1000px;margin:0 auto;}
+.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.btn{padding:8px 12px;border-radius:6px;border:0;cursor:pointer;background:var(--accent);color:#fff;}
+.muted{color:#666;}
+.card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;}
+.comment{border-bottom:1px solid #ddd;padding:8px 0;position:relative;}
+.comment .meta{font-size:0.85em;color:#555;margin-bottom:6px;}
+.comment .actions{position:absolute;right:8px;top:8px;}
+.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;border:2px solid rgba(0,0,0,0.08);}
+.flex{display:flex;align-items:center;}
+.right{margin-left:auto;}
+.toast{position:fixed;right:20px;bottom:20px;background:#333;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;transform:translateY(20px);transition:all .25s;}
+.toast.show{opacity:1;transform:translateY(0);}
+.dark-toggle{background:transparent;border:1px solid rgba(0,0,0,0.1);padding:6px;border-radius:6px;}
+input, textarea{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #ccc;background:#fff;color:#000;}
+.small{font-size:0.9em;}
+table{width:100%;border-collapse:collapse;margin-top:8px;}
+th,td{border:1px solid #999;padding:6px;background:#fff;}
+@media(max-width:600px){body{padding:12px;}}
+#modal{
+  display:none;
+  position:fixed;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  align-items:center; justify-content:center;
+  z-index:1000;
+}
+#modal > div{
+  background:var(--card);
+  padding:20px;
+  border-radius:10px;
+  max-width:420px;
+  width:90%;
+  box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+#modal input,#modal button{
+  border:none; outline:none; border-radius:6px; padding:8px;
+}
+#modal input{background:#f0f0f0;color:#000;margin-bottom:8px;}
+#modal button{background:var(--accent);color:#fff;cursor:pointer;}
+[data-theme="dark"] #modal input{background:#333;color:#eee;}
+[data-theme="dark"] #modal button{background:var(--accent);color:#fff;}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="topbar">
+  <div class="flex">
+    <h2 style="margin:0;color:var(--accent)">Loteria</h2>
+    <button id="themeBtn" class="dark-toggle" style="margin-left:12px">Tryb ciemny</button>
+  </div>
+  <div>
+    <span id="loginStatus" class="muted">niezalogowany</span>
+    <button id="goLogin" class="btn">Zaloguj / Zarejestruj</button>
+  </div>
+</header>
+
+<main>
+<section class="card" id="originalContent">
+  <div style="background-color:#C0C0C0;padding:8px">
+    <font size=7 color=#800080>Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</font><br>
+    <span style="font-family:'Courier New', monospace"><font size="6" color="blue">Oferujemy łatwą wygraną oraz szybkie wysyłki </font></span>
+    <marquee direction=right><font size=5 color="red"><i><b>Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></i></font></marquee>
+    <video width="320" height="240" controls>
+      <source src="movie.mp4" type="video/mp4">
+    </video>
+    <center><img src="obraz.jpg" alt="Sigma" /><br></center>
+    <img src="..jpg" width="300" height="100" alt="strzałka"/><br>
+    <font color=green><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></font>
+    <font color=#FFFF00 size=5><a href="https://fajnekonkursy.pl/loterie/">wejdź na naszą stronę!!!</a></font><br>
+    <center><img src="gif.gif" alt="GIF" width="500" height="500"><br></center>
+    <font color=white>Nasze opinie prezentują się następująco: <br></font>
+    <table>
+      <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
+      <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
+      <tr><td>Maria</td><td>8/10</td><td>Czechy</td></tr>
+      <tr><th>uczestnik</th><th>prędkość wysyłki nagrody</th><th>kraj</th></tr>
+      <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
+      <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
+    </table>
+    <img src="0002.gif" alt="Mery_christmas"><br>
+    <audio controls autoplay>
+      <source src="9.mp3" type="audio/mpeg">
+    </audio><br>
+    <font size=2>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></font><br>
+    <font color=white><b>Pamiętaj Polaku bądź sobą!!!</b></font>
+  </div>
+</section>
+
+<section class="card">
+  <h3>Formularz kontaktowy</h3>
+  <input id="contactName" placeholder="Imię (opcjonalnie)">
+  <input id="contactEmail" placeholder="Email">
+  <textarea id="contactMsg" placeholder="Wiadomość"></textarea>
+  <button id="sendContact" class="btn">Wyślij wiadomość</button>
+  <div id="contactStatus" class="small muted"></div>
+</section>
+
+<hr>
+
+<section class="card">
+  <h3>Komentarze</h3>
+  <div id="userPanel" class="small muted">
+    Zaloguj, żeby pisać komentarze i wrzucić awatar.
+    <div id="eggCounter" style="margin-top:4px; display:none;">
+      Znalazłeś <span id="eggCount">0</span> easter eggów!
+    </div>
+  </div>
+  <div id="compose" style="display:none;margin-top:8px">
+    <div class="flex">
+      <img id="myAvatarPreview" class="avatar" src="" alt="avatar" style="display:none">
+      <input type="file" id="avatarUpload" accept="image/*" style="width:auto">
+      <div style="flex:1">
+        <textarea id="commentText" placeholder="Twój komentarz"></textarea>
+        <div class="small muted">Poziom: <span id="userLevel">-</span> • Polubień: <span id="userLikes">0</span></div>
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <button id="postComment" class="btn">Dodaj komentarz</button>
+      <button id="clearAvatar" class="btn" style="background:#999">Usuń awatar</button>
+    </div>
+  </div>
+  <h4 class="small muted" style="margin-top:12px">Na żywo (chat)</h4>
+  <div id="commentsList"></div>
+</section>
+
+</main>
+
+<div id="toast" class="toast">OK</div>
+
+<div id="modal">
+  <div>
+    <h3>Zaloguj / Zarejestruj</h3>
+    <input id="mEmail" placeholder="E-mail">
+    <input id="mPass" placeholder="Hasło" type="password">
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button id="mLogin">Zaloguj</button>
+      <button id="mRegister" style="background:#27ae60">Zarejestruj</button>
+      <button id="mClose" style="background:#999">Zamknij</button>
+    </div>
+    <div class="small muted" id="modalMsg"></div>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:20px" class="small muted">© Twoja Strona</footer>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
+  authDomain: "loteria-8e369.firebaseapp.com",
+  projectId: "loteria-8e369",
+  storageBucket: "loteria-8e369.appspot.com",
+  messagingSenderId: "596116000000",
+  appId: "1:596116000000:web:383aa9766aa045a77e77e5",
+  measurementId: "G-NTF8HYCZN0"
+};
+const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
+
+// Init Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+// --- Utility ---
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function formatPL(dateStr){
+  const d = new Date(dateStr);
+  if(isNaN(d)) return dateStr;
+  const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// --- DOM ---
+const goLogin = document.getElementById('goLogin');
+const modal = document.getElementById('modal');
+const mClose = document.getElementById('mClose');
+const mLogin = document.getElementById('mLogin');
+const mRegister = document.getElementById('mRegister');
+const mEmail = document.getElementById('mEmail');
+const mPass = document.getElementById('mPass');
+const modalMsg = document.getElementById('modalMsg');
+const loginStatus = document.getElementById('loginStatus');
+const themeBtn = document.getElementById('themeBtn');
+const body = document.body;
+
+const compose = document.getElementById('compose');
+const postComment = document.getElementById('postComment');
+const commentText = document.getElementById('commentText');
+const commentsList = document.getElementById('commentsList');
+const userPanel = document.getElementById('userPanel');
+
+const avatarUpload = document.getElementById('avatarUpload');
+const myAvatarPreview = document.getElementById('myAvatarPreview');
+const clearAvatar = document.getElementById('clearAvatar');
+
+const contactName = document.getElementById('contactName');
+const contactEmail = document.getElementById('contactEmail');
+const contactMsg = document.getElementById('contactMsg');
+const sendContact = document.getElementById('sendContact');
+const contactStatus = document.getElementById('contactStatus');
+
+const userLevelEl = document.getElementById('userLevel');
+const userLikesEl = document.getElementById('userLikes');
+
+let currentAvatarURL = null;
+let foundEggs = new Set();
+
+// --- Dark mode ---
+const savedTheme = localStorage.getItem('theme') || 'light';
+body.setAttribute('data-theme', savedTheme);
+themeBtn.textContent = savedTheme==='light' ? 'Tryb ciemny' : 'Tryb jasny';
+themeBtn.addEventListener('click',()=>{
+  const cur=body.getAttribute('data-theme');
+  const next=cur==='light'?'dark':'light';
+  body.setAttribute('data-theme',next);
+  localStorage.setItem('theme',next);
+  themeBtn.textContent = next==='light'?'Tryb ciemny':'Tryb jasny';
+});
+
+// --- Modal login/register ---
+goLogin.addEventListener('click',()=> modal.style.display='flex');
+mClose.addEventListener('click',()=> modal.style.display='none');
+mLogin.addEventListener('click',async ()=>{
+  modalMsg.textContent='';
+  try{
+    await signInWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim());
+    modal.style.display='none'; toast('Zalogowano');
+  }catch(e){ modalMsg.textContent=e.message; }
+});
+mRegister.addEventListener('click',async ()=>{
+  modalMsg.textContent='';
+  try{
+    await createUserWithEmailAndPassword(auth,mEmail.value.trim(),mPass.value.trim());
+    modal.style.display='none'; toast('Zarejestrowano');
+  }catch(e){ modalMsg.textContent=e.message; }
+});
+
+// --- Easter Eggs ---
+const easterEggs = ['images/egg1.png','images/egg2.png','images/egg3.png'];
+function placeEasterEggs(){
+  easterEggs.forEach((src,index)=>{
+    const egg=document.createElement('img');
+    egg.src=src;
+    egg.style.position='absolute';
+    egg.style.width='30px';
+    egg.style.cursor='pointer';
+    egg.style.zIndex=50;
+    egg.style.left=Math.random()*(window.innerWidth-40)+'px';
+    egg.style.top=Math.random()*(window.innerHeight-40)+'px';
+    egg.dataset.index=index;
+    egg.addEventListener('click',async ()=>{
+      if(!foundEggs.has(index)){
+        foundEggs.add(index);
+        toast('Znalazłeś easter egga!');
+        const user=auth.currentUser;
+        if(user){
+          const userRef=doc(db,'users',user.uid);
+          await updateDoc(userRef,{easterEggsFound:foundEggs.size});
+          document.getElementById('eggCount').textContent=foundEggs.size;
+        }
+        egg.style.opacity=0.3;
+      }
+    });
+    document.body.appendChild(egg);
+  });
+}
+
+// --- Auth state ---
+onAuthStateChanged(auth,async (user)=>{
+  if(user){
+    loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
+    userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
+    compose.style.display='block';
+    const userDocSnap=(await getDocs(query(collection(db,'users')))).docs.find(d=>d.id===user.uid);
+    let eggCount=0;
+    if(userDocSnap){
+      const ud=userDocSnap.data();
+      if(ud.avatar){ myAvatarPreview.src=ud.avatar; myAvatarPreview.style.display='block'; currentAvatarURL=ud.avatar; }
+      userLevelEl.textContent=ud.level||'-';
+      userLikesEl.textContent=ud.totalLikes||0;
+      eggCount=ud.easterEggsFound||0;
+    }else{
+      userLevelEl.textContent='-';
+      userLikesEl.textContent='0';
+      await setDoc(doc(db,'users',user.uid),{email:user.email,easterEggsFound:0},{merge:true});
+    }
+    document.getElementById('eggCount').textContent=eggCount;
+    document.getElementById('eggCounter').style.display='block';
+    foundEggs = new Set(); // reset na nowo
+    placeEasterEggs();
+  }else{
+    loginStatus.textContent='niezalogowany';
+    userPanel.textContent='Zaloguj, żeby pisać komentarze i wrzucić awatar.';
+    compose.style.display='none';
+    myAvatarPreview.style.display='none';
+  }
+});
+
+</script>
+</body>
+</html>
