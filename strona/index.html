@@ -15,42 +15,28 @@ body{font-family:Arial,sans-serif;margin:0;padding:20px;background:var(--bg);col
 header, main, footer{max-width:1000px;margin:0 auto;}
 .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .btn{padding:8px 12px;border-radius:6px;border:0;cursor:pointer;background:var(--accent);color:#fff;}
+.btn.gray{background:#999;}
+.btn.like{background:#e67e22;}
 .muted{color:#666;}
 .card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;}
-.comment{border-bottom:1px solid #ddd;padding:8px 0;position:relative;}
-.comment .meta{font-size:0.85em;color:#555;margin-bottom:6px;}
-.comment .actions{position:absolute;right:8px;top:8px;}
-.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;border:2px solid rgba(0,0,0,0.08);}
+.comment{border-bottom:1px solid #ddd;padding:8px 0;position:relative;display:flex;align-items:flex-start;gap:8px;}
+.comment .meta{font-size:0.85em;color:#555;margin-bottom:4px;}
+.comment .actions{display:flex;gap:4px;margin-top:4px;}
+.comment .actions button{font-size:0.75em;padding:2px 6px;border:none;border-radius:4px;cursor:pointer;}
+.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.08);}
 .flex{display:flex;align-items:center;}
-.right{margin-left:auto;}
 .toast{position:fixed;right:20px;bottom:20px;background:#333;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;transform:translateY(20px);transition:all .25s;}
 .toast.show{opacity:1;transform:translateY(0);}
 .dark-toggle{background:transparent;border:1px solid rgba(0,0,0,0.1);padding:6px;border-radius:6px;}
 input, textarea{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #ccc;background:#fff;color:#000;}
 .small{font-size:0.9em;}
 table{width:100%;border-collapse:collapse;margin-top:8px;}
-th,td{border:1px solid #999;padding:6px;background:#fff;}
+th,td{border:1px solid #999;padding:6px;text-align:left;background:#fff;}
+th{background:#ddd;}
 @media(max-width:600px){body{padding:12px;}}
-#modal{
-  display:none;
-  position:fixed;
-  left:0; top:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.5);
-  align-items:center; justify-content:center;
-  z-index:1000;
-}
-#modal > div{
-  background:var(--card);
-  padding:20px;
-  border-radius:10px;
-  max-width:420px;
-  width:90%;
-  box-shadow:0 0 15px rgba(0,0,0,0.3);
-}
-#modal input,#modal button{
-  border:none; outline:none; border-radius:6px; padding:8px;
-}
+#modal{display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;}
+#modal > div{background:var(--card);padding:20px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 0 15px rgba(0,0,0,0.3);}
+#modal input,#modal button{border:none;outline:none;border-radius:6px;padding:8px;}
 #modal input{background:#f0f0f0;color:#000;margin-bottom:8px;}
 #modal button{background:var(--accent);color:#fff;cursor:pointer;}
 [data-theme="dark"] #modal input{background:#333;color:#eee;}
@@ -71,20 +57,20 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
 </header>
 
 <main>
-<section class="card" id="originalContent">
+<section class="card">
   <div style="background-color:#C0C0C0;padding:8px">
-    <font size=7 color=#800080>Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</font><br>
-    <span style="font-family:'Courier New', monospace"><font size="6" color="blue">Oferujemy łatwą wygraną oraz szybkie wysyłki </font></span>
-    <marquee direction=right><font size=5 color="red"><i><b>Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></i></font></marquee>
+    <h1 style="color:#800080">Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</h1>
+    <p style="font-family:'Courier New', monospace;color:blue;font-size:1.2em;">Oferujemy łatwą wygraną oraz szybkie wysyłki</p>
+    <marquee direction=right><b style="color:red;">Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></marquee>
     <video width="320" height="240" controls>
       <source src="movie.mp4" type="video/mp4">
     </video>
-    <center><img src="https://via.placeholder.com/300x200?text=Telefon" alt="telefon"/><br></center>
-    <img src="https://via.placeholder.com/300x100?text=Strzałka" width="300" height="100" alt="strzałka"/><br>
-    <font color=green><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></font><br>
-    <font color=#FFFF00 size=5><a href="https://fajnekonkursy.pl/loterie/">wejdź na naszą stronę!!!</a></font><br>
+    <center><img src="https://via.placeholder.com/300x200?text=Telefon" alt="telefon"><br></center>
+    <img src="https://via.placeholder.com/300x100?text=Strzałka" width="300" height="100" alt="strzałka"><br>
+    <p style="color:green;"><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></p>
+    <a href="https://fajnekonkursy.pl/loterie/" style="color:yellow;font-size:1.2em;">wejdź na naszą stronę!!!</a><br>
     <center><img src="https://via.placeholder.com/500x500?text=GIF" alt="GIF" width="500" height="500"><br></center>
-    <font color=white>Nasze opinie prezentują się następująco: <br></font>
+    <p style="color:white;">Nasze opinie prezentują się następująco:</p>
     <table>
       <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
       <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
@@ -97,8 +83,8 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
     <audio controls autoplay>
       <source src="9.mp3" type="audio/mpeg">
     </audio><br>
-    <font size=2>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></font><br>
-    <font color=white><b>Pamiętaj Polaku bądź sobą!!!</b></font>
+    <small>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></small><br>
+    <b style="color:white;">Pamiętaj Polaku bądź sobą!!!</b>
   </div>
 </section>
 
@@ -115,11 +101,8 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
 
 <section class="card">
   <h3>Komentarze</h3>
-  <div id="userPanel" class="small muted">
-    Zaloguj, żeby pisać komentarze i wrzucić awatar.
-    <div id="eggCounter" style="margin-top:4px; display:none;">
-      Znalazłeś <span id="eggCount">0</span> easter eggów!
-    </div>
+  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucić awatar.
+    <div id="eggCounter" style="margin-top:4px; display:none;">Znalazłeś <span id="eggCount">0</span> easter eggów!</div>
   </div>
   <div id="compose" style="display:none;margin-top:8px">
     <div class="flex">
@@ -132,7 +115,7 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
     </div>
     <div style="margin-top:8px">
       <button id="postComment" class="btn">Dodaj komentarz</button>
-      <button id="clearAvatar" class="btn" style="background:#999">Usuń awatar</button>
+      <button id="clearAvatar" class="btn gray">Usuń awatar</button>
     </div>
   </div>
   <h4 class="small muted" style="margin-top:12px">Na żywo (chat)</h4>
@@ -162,8 +145,7 @@ th,td{border:1px solid #999;padding:6px;background:#fff;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
@@ -179,9 +161,8 @@ const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
-// --- DOM ---
+const loginStatus = document.getElementById('loginStatus');
 const goLogin = document.getElementById('goLogin');
 const modal = document.getElementById('modal');
 const mClose = document.getElementById('mClose');
@@ -190,7 +171,6 @@ const mRegister = document.getElementById('mRegister');
 const mEmail = document.getElementById('mEmail');
 const mPass = document.getElementById('mPass');
 const modalMsg = document.getElementById('modalMsg');
-const loginStatus = document.getElementById('loginStatus');
 const themeBtn = document.getElementById('themeBtn');
 const body = document.body;
 
@@ -199,10 +179,6 @@ const postComment = document.getElementById('postComment');
 const commentText = document.getElementById('commentText');
 const commentsList = document.getElementById('commentsList');
 const userPanel = document.getElementById('userPanel');
-
-const avatarUpload = document.getElementById('avatarUpload');
-const myAvatarPreview = document.getElementById('myAvatarPreview');
-const clearAvatar = document.getElementById('clearAvatar');
 
 const contactName = document.getElementById('contactName');
 const contactEmail = document.getElementById('contactEmail');
@@ -214,9 +190,7 @@ const userLevelEl = document.getElementById('userLevel');
 const userLikesEl = document.getElementById('userLikes');
 
 let currentAvatarURL = null;
-let foundEggs = new Set();
 
-// --- Utility ---
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 function formatPL(dateStr){
   const d = new Date(dateStr);
@@ -255,70 +229,8 @@ mRegister.addEventListener('click',async ()=>{
   }catch(e){ modalMsg.textContent=e.message; }
 });
 
-// --- Easter Eggs ---
-const easterEggs = ['images/egg1.png','images/egg2.png','images/egg3.png'];
-function placeEasterEggs(){
-  easterEggs.forEach((src,index)=>{
-    const egg=document.createElement('img');
-    egg.src=src;
-    egg.style.position='absolute';
-    egg.style.width='30px';
-    egg.style.cursor='pointer';
-    egg.style.zIndex=50;
-    egg.style.left=Math.random()*(window.innerWidth-40)+'px';
-    egg.style.top=Math.random()*(window.innerHeight-40)+'px';
-    egg.dataset.index=index;
-    egg.addEventListener('click',async ()=>{
-      if(!foundEggs.has(index)){
-        foundEggs.add(index);
-        toast('Znalazłeś easter egga!');
-        const user=auth.currentUser;
-        if(user){
-          const userRef=doc(db,'users',user.uid);
-          await updateDoc(userRef,{easterEggsFound:foundEggs.size});
-          document.getElementById('eggCount').textContent=foundEggs.size;
-        }
-        egg.style.opacity=0.3;
-      }
-    });
-    document.body.appendChild(egg);
-  });
-}
-
-// --- Auth state ---
-onAuthStateChanged(auth,async (user)=>{
-  if(user){
-    loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
-    userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
-    compose.style.display='block';
-    const userDocSnap=(await getDocs(query(collection(db,'users')))).docs.find(d=>d.id===user.uid);
-    let eggCount=0;
-    if(userDocSnap){
-      const ud=userDocSnap.data();
-      if(ud.avatar){ myAvatarPreview.src=ud.avatar; myAvatarPreview.style.display='block'; currentAvatarURL=ud.avatar; }
-      userLevelEl.textContent=ud.level||'-';
-      userLikesEl.textContent=ud.totalLikes||0;
-      eggCount=ud.easterEggsFound||0;
-    }else{
-      userLevelEl.textContent='-';
-      userLikesEl.textContent='0';
-      await setDoc(doc(db,'users',user.uid),{email:user.email,easterEggsFound:0},{merge:true});
-    }
-    document.getElementById('eggCount').textContent=eggCount;
-    document.getElementById('eggCounter').style.display='block';
-    foundEggs = new Set();
-    placeEasterEggs();
-  }else{
-    loginStatus.textContent='niezalogowany';
-    userPanel.textContent='Zaloguj, żeby pisać komentarze i wrzucić awatar.';
-    compose.style.display='none';
-    myAvatarPreview.style.display='none';
-  }
-});
-
-// --- Formularz kontaktowy ---
+// --- Contact ---
 sendContact.addEventListener('click', async ()=>{
-  contactStatus.textContent='';
   const name = contactName.value.trim();
   const email = contactEmail.value.trim();
   const msg = contactMsg.value.trim();
@@ -330,21 +242,20 @@ sendContact.addEventListener('click', async ()=>{
   }catch(e){ contactStatus.textContent='Błąd wysyłki: '+e.message; }
 });
 
-// --- Komentarze ---
+// --- Comments ---
 postComment.addEventListener('click', async ()=>{
   const user = auth.currentUser;
   if(!user){ toast('Musisz być zalogowany!'); return; }
   const text = commentText.value.trim();
   if(!text) return;
-
   const commentData = {
     userId: user.uid,
     email: user.email,
     text,
     date: new Date(),
-    avatar: currentAvatarURL || null
+    avatar: currentAvatarURL || null,
+    likes: 0
   };
-
   try{
     await addDoc(collection(db,'comments'),commentData);
     commentText.value='';
@@ -353,30 +264,73 @@ postComment.addEventListener('click', async ()=>{
   }catch(e){ toast('Błąd: '+e.message); }
 });
 
-// --- Wyświetlanie komentarzy ---
+// --- Display comments ---
 async function loadComments(){
+  const user = auth.currentUser;
   commentsList.innerHTML='';
   const q = query(collection(db,'comments'),orderBy('date','desc'));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach(docSnap=>{
     const c = docSnap.data();
     const div = document.createElement('div');
-    div.className='comment flex';
+    div.className='comment';
+    const avatarHtml = c.avatar ? `<img src="${c.avatar}" class="avatar">` : '';
+    let actionsHtml = '';
+    if(user && (user.email === ADMIN_EMAIL || user.uid === c.userId)){
+      actionsHtml += `<button class="btn gray" onclick="deleteComment('${docSnap.id}')">Usuń</button>`;
+    }
+    actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes || 0})</button>`;
     div.innerHTML = `
-      ${c.avatar ? `<img src="${c.avatar}" class="avatar">` : ''}
+      ${avatarHtml}
       <div>
         <div class="meta">${c.email} • ${formatPL(c.date.toDate ? c.date.toDate() : c.date)}</div>
         <div>${c.text}</div>
+        <div class="actions">${actionsHtml}</div>
       </div>
     `;
     commentsList.appendChild(div);
   });
 }
 
-// --- Live chat: automatyczne odświeżanie co 5 sekund ---
-setInterval(loadComments, 5000);
+// --- Delete & Like functions ---
+window.deleteComment = async function(commentId){
+  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } 
+  catch(e){ toast('Błąd: '+e.message); }
+}
 
-// Załaduj komentarze przy starcie
+window.likeComment = async function(commentId){
+  const user = auth.currentUser;
+  if(!user){ toast('Musisz być zalogowany!'); return; }
+  const commentRef = doc(db,'comments',commentId);
+  await updateDoc(commentRef,{likes: (firebase.firestore.FieldValue || {increment:()=>1}).increment(1)});
+  loadComments();
+}
+
+// --- Auth state ---
+onAuthStateChanged(auth,async (user)=>{
+  if(user){
+    loginStatus.textContent=user.email+(user.email===ADMIN_EMAIL?' (admin)':'');
+    userPanel.textContent=`Jesteś zalogowany jako ${user.email}`;
+    compose.style.display='block';
+    const userDocSnap=(await getDocs(query(collection(db,'users')))).docs.find(d=>d.id===user.uid);
+    if(userDocSnap){
+      const ud=userDocSnap.data();
+      if(ud.avatar){ currentAvatarURL=ud.avatar; }
+      userLevelEl.textContent=ud.level||'-';
+      userLikesEl.textContent=ud.totalLikes||0;
+    }else{
+      userLevelEl.textContent='-'; userLikesEl.textContent='0';
+      await setDoc(doc(db,'users',user.uid),{email:user.email},{merge:true});
+    }
+  }else{
+    loginStatus.textContent='niezalogowany';
+    userPanel.textContent='Zaloguj, żeby pisać komentarze i wrzucić awatar.';
+    compose.style.display='none';
+  }
+});
+
+// Load comments every 5 seconds
+setInterval(loadComments,5000);
 loadComments();
 
 </script>
