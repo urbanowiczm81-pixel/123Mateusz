@@ -11,21 +11,81 @@
 [data-theme="dark"]{
   --bg:#111; --text:#eee; --card:#222; --accent:#9b59ff;
 }
-body{font-family:Arial,sans-serif;margin:0;padding:20px;background:var(--bg);color:var(--text);}
+body{
+  font-family:Arial,sans-serif;
+  margin:0;
+  padding:20px;
+  background:var(--bg);
+  color:var(--text);
+}
 header, main, footer{max-width:1000px;margin:0 auto;}
-.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.btn{padding:8px 12px;border-radius:6px;border:0;cursor:pointer;background:var(--accent);color:#fff;}
+.topbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.btn{
+  padding:8px 12px;
+  border-radius:6px;
+  border:0;
+  cursor:pointer;
+  background:var(--accent);
+  color:#fff;
+}
 .btn.gray{background:#999;}
 .btn.like{background:#e67e22;}
 .muted{color:#666;}
-.card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;}
-.comment{border-bottom:1px solid #ddd;padding:8px 0;position:relative;display:flex;align-items:flex-start;gap:8px;}
-.comment .meta{font-size:0.85em;color:#555;margin-bottom:4px;}
-.comment .actions{display:flex;gap:4px;margin-top:4px;}
-.comment .actions button{font-size:0.75em;padding:2px 6px;border:none;border-radius:4px;cursor:pointer;}
-.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.08);}
+.card{
+  background:var(--card);
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+}
+.comment{
+  border-bottom:1px solid #ddd;
+  padding:8px 0;
+  display:flex;
+  gap:8px;
+}
+.comment .meta{
+  font-size:0.85em;
+  color:#555;
+  margin-bottom:4px;
+}
+.comment .actions{
+  display:flex;
+  gap:4px;
+  margin-top:4px;
+}
+.comment .actions button{
+  font-size:0.75em;
+  padding:2px 6px;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+}
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(0,0,0,0.08);
+}
 .flex{display:flex;align-items:center;}
-.toast{position:fixed;right:20px;bottom:20px;background:#333;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;transform:translateY(20px);transition:all .25s;}
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#333;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:8px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:all .25s;
+}
 .toast.show{opacity:1;transform:translateY(0);}
 .dark-toggle{background:transparent;border:1px solid rgba(0,0,0,0.1);padding:6px;border-radius:6px;}
 input, textarea{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #ccc;background:#fff;color:#000;}
@@ -58,34 +118,37 @@ th{background:#ddd;}
 
 <main>
 <section class="card">
-  <div style="background-color:#C0C0C0;padding:8px">
-    <h1 style="color:#800080">Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</h1>
-    <p style="font-family:'Courier New', monospace;color:blue;font-size:1.2em;">Oferujemy łatwą wygraną oraz szybkie wysyłki</p>
-    <marquee direction=right><b style="color:red;">Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></marquee>
-    <video width="320" height="240" controls>
-      <source src="movie.mp4" type="video/mp4">
-    </video>
-    <center><img src="obraz.jpg" alt="telefon"><br></center>
-    <img src="..jpg" width="300" height="100" alt="strzałka"><br>
-    <p style="color:green;"><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></p>
-    <a href="https://fajnekonkursy.pl/loterie/" style="color:yellow;font-size:1.2em;">wejdź na naszą stronę!!!</a><br>
-    <center><img src="gif.gif" alt="GIF" width="500" height="500"><br></center>
-    <p style="color:white;">Nasze opinie prezentują się następująco:</p>
-    <table>
-      <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
-      <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
-      <tr><td>Maria</td><td>8/10</td><td>Czechy</td></tr>
-      <tr><th>uczestnik</th><th>prędkość wysyłki nagrody</th><th>kraj</th></tr>
-      <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
-      <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
-    </table>
-    <img src="https://via.placeholder.com/300x200?text=Mery_Christmas" alt="Mery_christmas"><br>
-    <audio controls autoplay>
-      <source src="9.mp3" type="audio/mpeg">
-    </audio><br>
-    <small>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></small><br>
-    <b style="color:white;">Pamiętaj Polaku bądź sobą!!!</b>
+  <h1 style="color:#800080">Wygraj gry, samochody, pieniądze i inne nagrody!</h1>
+  <p style="font-family:'Courier New', monospace;color:blue;font-size:1.2em;">Łatwa wygrana i szybka wysyłka.</p>
+  <div style="overflow:hidden;white-space:nowrap;color:red;font-weight:bold;">Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</div>
+  <video width="320" height="240" controls>
+    <source src="movie.mp4" type="video/mp4">
+  </video>
+  <div style="text-align:center;">
+    <img src="obraz.jpg" alt="telefon" style="max-width:100%;height:auto;">
+    <img src="..jpg" width="300" height="100" alt="strzałka">
   </div>
+  <p style="color:green;"><big>Codziennie o 12:25 zaczynamy losowania!</big></p>
+  <a href="https://fajnekonkursy.pl/loterie/" style="color:yellow;font-size:1.2em;">Wejdź na naszą stronę!</a>
+  <div style="text-align:center;">
+    <img src="gif.gif" alt="GIF" width="500" height="500">
+  </div>
+  <p style="color:white;">Opinie użytkowników:</p>
+  <table>
+    <tr><th>Użytkownik</th><th>Opinia</th><th>Kraj</th></tr>
+    <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
+    <tr><td>Maria</td><td>8/10</td><td>Czechy</td></tr>
+    <tr><th>Uczestnik</th><th>Prędkość wysyłki</th><th>Kraj</th></tr>
+    <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
+    <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
+  </table>
+  <div style="text-align:center;">
+    <img src="https://via.placeholder.com/300x200?text=Mery_Christmas" alt="Mery_christmas">
+  </div>
+  <audio controls>
+    <source src="9.mp3" type="audio/mpeg">
+  </audio>
+  <small>Uwaga: inwestowanie może nie być dla Ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></small>
 </section>
 
 <section class="card">
@@ -101,9 +164,7 @@ th{background:#ddd;}
 
 <section class="card">
   <h3>Komentarze</h3>
-  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucić awatar.
-    <div id="eggCounter" style="margin-top:4px; display:none;">Znalazłeś <span id="eggCount">0</span> easter eggów!</div>
-  </div>
+  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucić awatar.</div>
   <div id="compose" style="display:none;margin-top:8px">
     <div class="flex">
       <img id="myAvatarPreview" class="avatar" src="" alt="avatar" style="display:none">
@@ -145,7 +206,8 @@ th{background:#ddd;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, updateDoc, deleteDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC127yAggiPYIHB9X2RV0Ni9Sgx7BW6h8I",
@@ -161,6 +223,7 @@ const ADMIN_EMAIL = "urbanowiczm81@gmail.com";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const loginStatus = document.getElementById('loginStatus');
 const goLogin = document.getElementById('goLogin');
@@ -188,9 +251,13 @@ const contactStatus = document.getElementById('contactStatus');
 
 const userLevelEl = document.getElementById('userLevel');
 const userLikesEl = document.getElementById('userLikes');
+const avatarUpload = document.getElementById('avatarUpload');
+const myAvatarPreview = document.getElementById('myAvatarPreview');
+const clearAvatar = document.getElementById('clearAvatar');
 
 let currentAvatarURL = null;
 
+// Toast
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 function formatPL(dateStr){
   const d = new Date(dateStr);
@@ -242,48 +309,79 @@ sendContact.addEventListener('click', async ()=>{
   }catch(e){ contactStatus.textContent='Błąd wysyłki: '+e.message; }
 });
 
-// Comments
+// Avatar upload
+avatarUpload.addEventListener('change', async (e)=>{
+  const user = auth.currentUser;
+  if(!user) { toast('Musisz być zalogowany!'); return; }
+  const file = e.target.files[0];
+  if(!file) return;
+  const storageRef = ref(storage, 'avatars/'+user.uid);
+  try{
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    currentAvatarURL = url;
+    myAvatarPreview.src = url;
+    myAvatarPreview.style.display='block';
+    await setDoc(doc(db,'users',user.uid), {avatar:url}, {merge:true});
+    toast('Awatar zapisany!');
+  }catch(e){ toast('Błąd uploadu: '+e.message); }
+});
+
+// Clear avatar
+clearAvatar.addEventListener('click', async ()=>{
+  const user = auth.currentUser;
+  if(!user) return;
+  currentAvatarURL = null;
+  myAvatarPreview.src='';
+  myAvatarPreview.style.display='none';
+  await setDoc(doc(db,'users',user.uid), {avatar:null}, {merge:true});
+  toast('Awatar usunięty!');
+});
+
+// Post comment
 postComment.addEventListener('click', async ()=>{
   const user = auth.currentUser;
   if(!user){ toast('Musisz być zalogowany!'); return; }
   const text = commentText.value.trim();
   if(!text) return;
   const commentData = { userId: user.uid, email: user.email, text, date: new Date(), avatar: currentAvatarURL||null, likes: 0 };
-  try{ await addDoc(collection(db,'comments'),commentData); commentText.value=''; toast('Komentarz dodany!'); loadComments(); }
-  catch(e){ toast('Błąd: '+e.message); }
+  try{ 
+    await addDoc(collection(db,'comments'),commentData); 
+    commentText.value=''; 
+    toast('Komentarz dodany!');
+  }catch(e){ toast('Błąd: '+e.message); }
 });
 
-// Load comments
-async function loadComments(){
-  const user = auth.currentUser;
-  commentsList.innerHTML='';
+// Load comments live
+function loadCommentsLive(){
   const q = query(collection(db,'comments'),orderBy('date','desc'));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach(docSnap=>{
-    const c = docSnap.data();
-    const div = document.createElement('div');
-    div.className='comment';
-    const avatarHtml = c.avatar ? `<img src="${c.avatar}" class="avatar">` : '';
-    let actionsHtml = '';
-    if(user && (user.email===ADMIN_EMAIL || user.uid===c.userId)){
-      actionsHtml += `<button class="btn gray" onclick="deleteComment('${docSnap.id}')">Usuń</button>`;
-    }
-    actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes||0})</button>`;
-    div.innerHTML = `${avatarHtml}<div><div class="meta">${c.email} • ${formatPL(c.date.toDate?c.date.toDate():c.date)}</div><div>${c.text}</div><div class="actions">${actionsHtml}</div></div>`;
-    commentsList.appendChild(div);
+  onSnapshot(q, (snapshot)=>{
+    commentsList.innerHTML='';
+    const user = auth.currentUser;
+    snapshot.forEach(docSnap=>{
+      const c = docSnap.data();
+      const div = document.createElement('div');
+      div.className='comment';
+      const avatarHtml = c.avatar ? `<img src="${c.avatar}" class="avatar">` : '';
+      let actionsHtml = '';
+      if(user && (user.email===ADMIN_EMAIL || user.uid===c.userId)){
+        actionsHtml += `<button class="btn gray" onclick="deleteComment('${docSnap.id}')">Usuń</button>`;
+      }
+      actionsHtml += `<button class="btn like" onclick="likeComment('${docSnap.id}')">❤ Polub (${c.likes||0})</button>`;
+      div.innerHTML = `${avatarHtml}<div><div class="meta">${c.email} • ${formatPL(c.date.toDate?c.date.toDate():c.date)}</div><div>${c.text}</div><div class="actions">${actionsHtml}</div></div>`;
+      commentsList.appendChild(div);
+    });
   });
 }
 
 // Delete & Like
 window.deleteComment = async function(commentId){ 
-  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); loadComments(); } 
+  try{ await deleteDoc(doc(db,'comments',commentId)); toast('Komentarz usunięty!'); } 
   catch(e){ toast('Błąd: '+e.message); } 
 }
-
 window.likeComment = async function(commentId){
   const user = auth.currentUser;
   if(!user){ toast('Musisz być zalogowany!'); return; }
-
   const commentRef = doc(db,'comments',commentId);
   try{
     const commentSnap = await getDoc(commentRef);
@@ -292,7 +390,6 @@ window.likeComment = async function(commentId){
     const currentLikes = data.likes || 0;
     await updateDoc(commentRef, { likes: currentLikes + 1 });
     toast('Polubiono komentarz!');
-    loadComments();
   }catch(e){ toast('Błąd: '+e.message); }
 }
 
@@ -305,7 +402,7 @@ onAuthStateChanged(auth,async (user)=>{
     const userDocSnap = (await getDocs(collection(db,'users'))).docs.find(d=>d.id===user.uid);
     if(userDocSnap){ 
       const ud = userDocSnap.data(); 
-      if(ud.avatar){ currentAvatarURL=ud.avatar; document.getElementById('myAvatarPreview').src=currentAvatarURL; document.getElementById('myAvatarPreview').style.display='block'; }
+      if(ud.avatar){ currentAvatarURL=ud.avatar; myAvatarPreview.src=currentAvatarURL; myAvatarPreview.style.display='block'; }
       userLevelEl.textContent=ud.level||'-';
       userLikesEl.textContent=ud.totalLikes||0;
     }else{ 
@@ -319,10 +416,11 @@ onAuthStateChanged(auth,async (user)=>{
   }
 });
 
-// Refresh comments
-setInterval(loadComments,5000);
-loadComments();
+// Start live comments
+loadCommentsLive();
 </script>
 </body>
 </html>
+
+
 
