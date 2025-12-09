@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Loteria - Pełna wersja</title>
+<title>Loteria</title>
 <style>
 :root{--bg:#C0C0C0;--text:#222;--card:#fff;--accent:#6a0dad;}
 [data-theme="dark"]{--bg:#111;--text:#eee;--card:#222;--accent:#9b59ff;}
@@ -55,37 +55,37 @@ th{background:#ddd;}
 </header>
 
 <main>
-<!-- Sekcja z obrazkami, wideo, GIF i tabelą -->
 <section class="card" id="originalContent">
   <div style="background-color:#C0C0C0;padding:8px">
-    <h1 style="color:#800080">Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</h1>
-    <p style="font-family:'Courier New', monospace;color:blue;font-size:1.2em;">Oferujemy łatwą wygraną oraz szybkie wysyłki</p>
-    <marquee direction="right" style="color:red;font-weight:bold;font-size:1.1em;"><i>Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</i></marquee>
+    <font size=7 color=#800080>Wygraj u nas gry, samochody, pieniądze i inne nagrody!!!</font><br>
+    <span style="font-family:'Courier New', monospace"><font size="6" color="blue">Oferujemy łatwą wygraną oraz szybkie wysyłki </font></span>
+    <marquee direction=right><font size=5 color="red"><i><b>Brawo użytkowniku, wygrałeś nowego iphona 4s!!!</b></i></font></marquee>
     <video width="320" height="240" controls>
       <source src="movie.mp4" type="video/mp4">
     </video>
-    <center><img src="obraz.jpg" alt="telefon" width="300"/></center>
+    <center><img src="obraz.jpg" alt="telefon"/><br></center>
     <img src="..jpg" width="300" height="100" alt="strzałka"/><br>
-    <p style="color:green;font-size:1.1em;">Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</p>
-    <p><a href="https://fajnekonkursy.pl/loterie/" style="color:yellow;font-size:1.2em;">wejdź na naszą stronę!!!</a></p>
-    <center><img src="gif.gif" alt="GIF" width="500" height="500"></center>
+    <font color=green><big>Codziennie o 12<sup>25</sup> zaczynamy losowania!!!</big></font><br>
+    <font color=#FFFF00 size=5><a href="https://fajnekonkursy.pl/loterie/">wejdź na naszą stronę!!!</a></font><br>
+    <center><img src="gif.gif" alt="GIF" width="500" height="500"><br></center>
+    <font color=white>Nasze opinie prezentują się następująco: <br></font>
     <table>
-      <tr><th>Internauta</th><th>Opinia</th><th>Kraj</th></tr>
+      <tr><th>internauta</th><th>opinia</th><th>kraj</th></tr>
       <tr><td>Małgorzata</td><td>9/10</td><td>Niemcy</td></tr>
       <tr><td>Maria</td><td>8/10</td><td>Czechy</td></tr>
-      <tr><th>Uczestnik</th><th>Prędkość wysyłki nagrody</th><th>Kraj</th></tr>
+      <tr><th>uczestnik</th><th>prędkość wysyłki nagrody</th><th>kraj</th></tr>
       <tr><td>Michał</td><td>2 dni robocze</td><td>Francja</td></tr>
       <tr><td>Antoni</td><td>3 dni robocze</td><td>Hiszpania</td></tr>
     </table>
+    <img src="0002.gif" alt="Mery_christmas"><br>
     <audio controls autoplay>
       <source src="9.mp3" type="audio/mpeg">
-    </audio>
-    <p style="font-size:0.9em;">Uwaga: inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></p>
-    <p style="color:white;font-weight:bold;">Pamiętaj Polaku bądź sobą!!!</p>
+    </audio><br>
+    <font size=2>Uwaga inwestowanie może nie być dla ciebie odpowiednie... <a href="https://www.plus500.com/pl/">więcej</a></font><br>
+    <font color=white><b>Pamiętaj Polaku bądź sobą!!!</b></font>
   </div>
 </section>
 
-<!-- Formularz kontaktowy -->
 <section class="card">
   <h3>Formularz kontaktowy</h3>
   <input id="contactName" placeholder="Imię (opcjonalnie)">
@@ -95,11 +95,13 @@ th{background:#ddd;}
   <div id="contactStatus" class="small muted"></div>
 </section>
 
-<!-- Komentarze -->
 <section class="card">
   <h3>Komentarze</h3>
-  <div id="userPanel" class="small muted">Zaloguj, żeby pisać komentarze i wrzucać awatar i GIF.
-    <div id="eggCounter" style="margin-top:4px; display:none;">Znalazłeś <span id="eggCount">0</span> easter eggów!</div>
+  <div id="userPanel" class="small muted">
+    Zaloguj, żeby pisać komentarze i wrzucać awatar, zdjęcia i GIF.
+    <div id="eggCounter" style="margin-top:4px; display:none;">
+      Znalazłeś <span id="eggCount">0</span> easter eggów!
+    </div>
   </div>
   <div id="compose" style="display:none;margin-top:8px">
     <div class="flex">
@@ -143,9 +145,10 @@ th{background:#ddd;}
 <footer style="text-align:center;padding:20px" class="small muted">© Twoja Strona</footer>
 
 <script type="module">
-// Tutaj wklej cały JS z Firebase: auth, komentarze, polubienia, leaderboard, easter eggs, awatary, dark mode
-// Kod JS który wysłałem w poprzedniej wiadomości, połączony w jednym <script>
+// Tutaj wklej kompletny JS z Firebase:
+// logowanie/rejestracja, komentarze, polubienia, media, awatary, easter eggs, dark mode, leaderboard
 </script>
 
 </body>
 </html>
+
